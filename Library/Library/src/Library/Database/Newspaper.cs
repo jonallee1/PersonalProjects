@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Library.src.Library.LibraryObjects
+namespace Library.src.Library.Database
 {
     class Newspaper : LibraryObject
     {
 
-        Newspaper(String Name, int LibraryID): base(Name, "Newspaper", LibraryID)
+        public Newspaper(String Name, int LibraryID): base(Name, "Newspaper", LibraryID)
         {
 
         }

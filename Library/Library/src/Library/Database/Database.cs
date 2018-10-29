@@ -91,7 +91,7 @@ namespace Library.src.Library.Database
             return Members[MemberID];
         }
 
-        public bool validMemberID(int MemberID)
+        public bool ValidMemberID(int MemberID)
         {
             if (Members.ContainsKey(MemberID))
             {

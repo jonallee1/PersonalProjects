@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Library.src.Library
+namespace Library.src.Library.Database
+
 {
     public abstract class LibraryObject
     {

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Library.src.Library.DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Library.src.Library
+namespace Library.src.Library.ServiceLayer
 {
     class Library
     {
-        private Dictionary<int, LibraryObject> Collection = new Dictionary<int, LibraryObject>();
-        private Dictionary<int, Member> Members = new Dictionary<int, Member>();
+     
         private int currLibID;
         Library()
         {

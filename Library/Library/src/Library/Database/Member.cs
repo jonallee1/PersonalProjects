@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Library.src.Library
+namespace Library.src.Library.Database
 {
     class Member
     {
@@ -12,7 +12,7 @@ namespace Library.src.Library
         private String username;
         private String password;
 
-        Member(String name, DateTime birthday, int memberID, String username, String password)
+        public Member(String name, DateTime birthday, int memberID, String username, String password)
         {
             setName(name);
             setBirthday(birthday);
