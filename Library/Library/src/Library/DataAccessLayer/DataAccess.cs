@@ -14,6 +14,29 @@ namespace Library.src.Library.DataAccessLayer
             db = new DB();
         }
 
+        public bool LibraryObjectExists(int LibraryObjectID)
+        {
+            if (db.validLibraryID(LibraryObjectID))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool MemberExists(int memberID)
+        {
+            if (db.ValidMemberID(memberID))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
     }

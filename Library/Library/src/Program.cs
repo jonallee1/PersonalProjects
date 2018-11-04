@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.src.Library.GUILayer;
+using System;
 
 namespace Library
 {
@@ -6,7 +7,7 @@ namespace Library
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            MainScreen test = new MainScreen();
         }
     }
 }
