@@ -172,6 +172,31 @@ namespace Library.src.Library.GUILayer
 
         public void Rent()
         {
+            bool rentScreenRunning = true;
+            while (rentScreenRunning)
+            {
+                Console.WriteLine("-------------------------------------------");
+                Console.WriteLine("-                   Rent                  -");
+                Console.WriteLine("- Choose an option                        -");
+                Console.WriteLine("- 1: Search                               -");
+                Console.WriteLine("- 2: Cancel                               -");
+                Console.WriteLine("-------------------------------------------");
+
+                Console.Write("Option: ");
+                int Selection = Convert.ToInt32(Console.ReadLine());
+                if (Selection == 1)
+                {
+                    //Controller rent
+                }
+                else if (Selection == 2)
+                {
+                    //controller deposit
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Command");
+                }
+            }
 
         }
     }
