@@ -9,9 +9,9 @@ namespace Library.src.Library.DataAccessLayer
     {
         private DB db;
 
-        DataAccess()
+        public DataAccess()
         {
-            db = new DB();
+            this.db = new DB();
         }
 
         public bool LibraryObjectExists(int LibraryObjectID)
@@ -37,7 +37,37 @@ namespace Library.src.Library.DataAccessLayer
                 return false;
             }
         }
+        public List<LibraryObject> returnSearch(String Keyword)
+        {
+            
+            return db.returnSearch(Keyword);
+        }
 
+
+        public string getPassword(int memberID)
+        {
+            return db.GetMember(memberID).getPassword();
+        }
+
+        public int createUser(String name, DateTime birthday, String username, String password)
+        {
+            return db.AddMember(name, birthday, username, password);
+        }
+
+        public void checkOut(int memberID, int libraryID)
+        {
+            db.rentedObject(memberID, libraryID);
+        }
+
+        public List<LibraryObject> checkOutItems(int memberID)
+        {
+            return db.checkOutItems(memberID);
+        }
+
+        public void returnBook(int libraryID, int memberID)
+        {
+            db.returnBook(libraryID, memberID);
+        }
 
     }
 }

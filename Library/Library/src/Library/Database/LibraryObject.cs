@@ -8,22 +8,22 @@ namespace Library.src.Library.Database
     public abstract class LibraryObject
     {
         private String name;
-        private String type;
+        private String typeobj;
         private int LibraryID;
 
-        public LibraryObject(String name, String Type, int LibraryID) {
-            setObjectType(Type);
+        public LibraryObject(String name, String typeobj, int LibraryID) {
+            setObjectType(typeobj);
             setName(name);
             setLibraryID(LibraryID);
         }
 
         public string getObjectType()
         {
-            return this.type;
+            return this.typeobj;
         } 
-        public void setObjectType(String Type)
+        public void setObjectType(String typeobj)
         {
-            this.type = Type;
+            this.typeobj = typeobj;
         }
 
         public String getName()
@@ -44,6 +44,11 @@ namespace Library.src.Library.Database
         public int getLibraryID()
         {
             return this.LibraryID;
+        }
+
+        internal string GetObjectType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

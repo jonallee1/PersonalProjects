@@ -13,7 +13,7 @@ namespace Library.src.Library.Database
         
 
 
-        public Book(string Name, int numpages, int isbn, string publisher, int LibraryID) : base(Name, "Book", LibraryID)
+        public Book(string Name, int numpages, int isbn, string publisher, int LibraryID) : base(Name, "Books", LibraryID)
         {
             
         }

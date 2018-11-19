@@ -11,12 +11,16 @@ namespace Library.src.Library.Database
         private int memberID;
         private String username;
         private String password;
+        private Dictionary<int, LibraryObject> checkedOut;
 
         public Member(String name, DateTime birthday, int memberID, String username, String password)
         {
             setName(name);
             setBirthday(birthday);
             setMemberID(memberID);
+            setPassword(password);
+            setUsername(username);
+            checkedOut = new Dictionary<int, LibraryObject>();
         }
 
         public void setName(String name)
@@ -75,6 +79,25 @@ namespace Library.src.Library.Database
         public String getUsername()
         {
             return this.username;
+        }
+        public void rentBook(LibraryObject rentedObject)
+        {
+            checkedOut.Add(rentedObject.getLibraryID(), rentedObject);
+        }
+
+        public void returnBook(int libraryID)
+        {
+            checkedOut.Remove(libraryID);
+        }
+
+        public List<LibraryObject> checkedOutItems()
+        {
+            List<LibraryObject> output = new List<LibraryObject>();
+            foreach (KeyValuePair<int, LibraryObject> kvp in checkedOut)
+            {
+                output.Add(kvp.Value);
+            }
+            return output;
         }
     }
 }

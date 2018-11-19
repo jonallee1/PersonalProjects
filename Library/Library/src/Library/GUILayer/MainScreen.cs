@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Library.src.Library.ControllerLayer;
+using Library.src.Library.DataAccessLayer;
+using Library.src.Library.Database;
+using Library.src.Library.ServiceLayer;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +10,7 @@ namespace Library.src.Library.GUILayer
 {
     class MainScreen
     {
-        
+        Controller controller = new Controller();
 
         public MainScreen()
         {
@@ -16,6 +20,9 @@ namespace Library.src.Library.GUILayer
 
         public void Login()
         {
+           
+            
+
             bool ProgramRunning = true;
             while (ProgramRunning)
             {
@@ -34,7 +41,7 @@ namespace Library.src.Library.GUILayer
                 }
                 else if (intTemp == 2)
                 {
-
+                    createUser();
                 }
                 else if (intTemp == 3)
                 {
@@ -48,7 +55,7 @@ namespace Library.src.Library.GUILayer
             }
             
         }
-
+        //encrypt password when reading in information
         public void SignIn()
         {
             bool signInRunning = true;
@@ -73,31 +80,28 @@ namespace Library.src.Library.GUILayer
                 }
                 else
                 {
-                    LibraryMainScreen();
-                    signInRunning = false;
-                }
-                
-                /*
-                if(singin correctly)
-                {
-                    LibraryMainScreen();
-                    signInRunning = false;
-                                
+                    if (controller.checkCredentials(MemberID, password))
+                    {
+                        controller.signIn(MemberID);
+                        LibraryMainScreen();
+                        signInRunning = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid credentials, please try again");
+                    }
 
                 }
-             
-             
-             
-                */
-                
-                //Call Controller Sign in function
+
             }
 
-
-
-
-
         }
+
+
+
+
+
+
         public void LibraryMainScreen()
         {
             bool mainscreenrunning = true;
@@ -108,7 +112,7 @@ namespace Library.src.Library.GUILayer
                 Console.WriteLine("-               MAIN SCREEN               -");
                 Console.WriteLine("- Choose an option                        -");
                 Console.WriteLine("- 1: Rent                                 -");
-                Console.WriteLine("- 2: Deposit                              -");
+                Console.WriteLine("- 2: Return                               -");
                 Console.WriteLine("- 3: See current Library objects          -");
                 Console.WriteLine("- 4: Sign Out                             -");
                 Console.WriteLine("-------------------------------------------");
@@ -117,18 +121,19 @@ namespace Library.src.Library.GUILayer
 
                 if (Selection == 1)
                 {
-                    //Controller rent
+                    Rent();
                 }
                 else if (Selection == 2)
                 {
-                    //controller deposit
+                    returnItem();
                 }
                 else if (Selection == 3)
                 {
-                    //controller show list
+                    checkedOutItems();
                 }
                 else if (Selection == 4)
                 {
+                    controller.signOut();
                     mainscreenrunning = false;
                 }
                 else
@@ -137,6 +142,41 @@ namespace Library.src.Library.GUILayer
                 }
             }
         }
+
+
+        public void returnItem()
+        {
+            bool returnscreenrunning = true;
+            List<LibraryObject> checkedoutitems;
+            while (returnscreenrunning)
+            {
+                Console.WriteLine("-------------------------------------------");
+                Console.WriteLine("-             Return SCREEN               -");
+                Console.WriteLine("- Select which item to return by LibID    -");
+                Console.WriteLine("- 0: Cancel                               -");
+                checkedoutitems = controller.checkOutItems();
+                int counter = 1;
+                foreach (LibraryObject lo in checkedoutitems)
+                {
+                    Console.WriteLine(counter + ": Name: " + lo.getName() + ", Type: " + lo.getObjectType() + ", ID: " + lo.getLibraryID());
+                    counter++;
+                }
+                int Selection = Convert.ToInt32(Console.ReadLine());
+                if (Selection == 0)
+                {
+                    returnscreenrunning = false;
+                }
+                else
+                {
+                    controller.returnBook(Selection);
+                }
+
+            }
+
+
+        }
+
+
 
         public void createUser()
         {
@@ -152,14 +192,26 @@ namespace Library.src.Library.GUILayer
                 string Username = Console.ReadLine();
                 Console.Write("Password: ");
                 string Password = Console.ReadLine();
-                Console.Write("Birthday: ");
-                string Birthday = Console.ReadLine();
+                Console.Write("Birthday: Year ");
+                int bdayyear = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Birthday: Month ");
+                int bdaymonth = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Birthday: Day ");
+                int bdayday = Convert.ToInt32(Console.ReadLine());
+                DateTime birthday = new DateTime(bdayyear, bdayday, bdaymonth);
+
                 Console.Write("Name: ");
                 string Name = Console.ReadLine();
                 Console.Write("Go Back? Y/N: ");
                 string goBack = Console.ReadLine();
                 if (goBack == "Y")
                 {
+                    mainscreenrunning = false;
+                }
+                else
+                {
+                    int memberID = controller.createUser(Name,birthday , Username, Password);
+                    Console.WriteLine("Your memberID is: " + memberID);
                     mainscreenrunning = false;
                 }
                 /*if(valid)
@@ -186,18 +238,82 @@ namespace Library.src.Library.GUILayer
                 int Selection = Convert.ToInt32(Console.ReadLine());
                 if (Selection == 1)
                 {
-                    //Controller rent
+
+                    string Search = Console.ReadLine();
+                    returnSearch(Search);
                 }
                 else if (Selection == 2)
                 {
-                    //controller deposit
+                    rentScreenRunning = false;
                 }
                 else
                 {
                     Console.WriteLine("Invalid Command");
                 }
             }
+        }
 
+        public void returnSearch(String Keyword)
+        {
+            bool returnSearchRun = true;
+            while (returnSearchRun)
+            {
+                List<LibraryObject> results = controller.returnSearch(Keyword);
+                
+                Console.WriteLine("-------------------------------------------");
+                Console.WriteLine("-              Search Results             -");
+                Console.WriteLine("- Please select an object                 -");
+                Console.WriteLine("- 0: Go back                              -");
+                int counter = 1;
+                Console.WriteLine("Number of results: " + results.Count);
+                foreach (LibraryObject lo in results)
+                {
+                    Console.WriteLine(counter + ": Name: " + lo.getName() + ", Type: " + lo.getObjectType() + ", ID: " + lo.getLibraryID());
+                    counter++;
+                }
+                Console.WriteLine("-------------------------------------------");
+                Console.Write("Selection: ");
+                int Selection = Convert.ToInt32(Console.ReadLine());
+                if (Selection == 0)
+                {
+                    returnSearchRun = false;
+                }
+                else
+                {
+                    controller.checkOut(Selection-1);
+                }
+            }
+        }
+
+
+
+        public void checkedOutItems()
+        {
+            bool checkedOutItems = true;
+            while (checkedOutItems)
+            {
+                Console.WriteLine("-------------------------------------------");
+                Console.WriteLine("-        Current Checked Out Items        -");
+                List<LibraryObject> checkedoutitems = controller.checkOutItems();
+                int counter = 1;
+                foreach (LibraryObject lo in checkedoutitems)
+                {
+                    Console.WriteLine(counter + ": Name: " + lo.getName() + ", Type: " + lo.getObjectType() + ", ID: " + lo.getLibraryID());
+                    counter++;
+                }
+                Console.Write("Go back? Y/N");
+                string goBack = Console.ReadLine();
+                if (goBack == "Y")
+                {
+                    checkedOutItems = false;
+                }
+                else
+                {
+
+                }
+
+            }
+           
         }
     }
 }
